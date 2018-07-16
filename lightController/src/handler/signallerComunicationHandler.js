@@ -35,5 +35,9 @@ export default {
             });
         });
     },
+
+    sendColorToSignaller(signallerId, currentColor){
+        webSocketClients[signallerId].send(currentColor);
+    }
     
 }
