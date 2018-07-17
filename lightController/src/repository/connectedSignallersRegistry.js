@@ -17,7 +17,8 @@ export default {
             signallers[id].currentColor = utils.randomProperty(colors);
             return signallers[id];
         } 
-        signallers[id]= new Signaller(true, Date.now(), utils.randomProperty(colors));
+        signallers[id]= new Signaller(id, true, Date.now(), utils.randomProperty(colors));
+        
         return signallers[id];
     },
     deactivateSignaller(id){
@@ -27,7 +28,7 @@ export default {
         signallers[id].active = false;
     },
     findAllSignallers(){
-        return signallers;
+        return Object.values(signallers);
     }
 }
 

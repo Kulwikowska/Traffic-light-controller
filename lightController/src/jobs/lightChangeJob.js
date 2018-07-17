@@ -1,29 +1,30 @@
 import schedule from 'node-schedule'
 import signallerComunicationHandler from '../handler/signallerComunicationHandler';
-import connectedSignallersRegistry from '../webSockets/connectedSignallersRegistry';
+import connectedSignallersRegistry from '../repository/connectedSignallersRegistry';
 import {Signaller} from '../model/signaller';
 var j = schedule.scheduleJob('*/1 * * * * *', function() {
     var signallers = connectedSignallersRegistry.findAllSignallers();
-    for (let [id, signaller] of Object.entries(signallers)){
-        if (signallers[id].active == true && signallers[id].date <= (Date.now() - 5000)){
-            switch(signallers[id].currentColor){
+    for(let signaller of signallers) {
+        if (signaller.active == true && signaller.date <= (Date.now() - 5000)){
+            switch(signaller.currentColor){
                 case 'red':
-                signallers[id].currentColor = 'red_yellow';
+                    signaller.currentColor = 'red_yellow';
                     break;
                 case 'red_yellow':
-                signallers[id].currentColor = 'green';
+                    signaller.currentColor = 'green';
                     break;
                 case 'green':
-                signallers[id].currentColor = 'yellow';
+                    signaller.currentColor = 'yellow';
                     break;
                 case 'yellow':
-                signallers[id].currentColor = 'red';
+                    signaller.currentColor = 'red';
                     break;
                 default:
                     console.log("color is not defined");
             }
-            signallers[id].date = Date.now();
-            signallerComunicationHandler.sendColorToSignaller(id, signallers[id].currentColor);
+            signaller.date = Date.now();
+            signallerComunicationHandler.sendColorToSignaller(signaller.signallerId, signaller.currentColor);
         }
-        };
+    }
+
     });

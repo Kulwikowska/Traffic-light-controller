@@ -1,5 +1,5 @@
 import WebSocket from "ws";
-import ConnectedSignallersRegistry from '../webSockets/connectedSignallersRegistry'
+import ConnectedSignallersRegistry from '../repository/connectedSignallersRegistry'
 import {Signaller} from '../model/signaller';
 
 let wss = null;

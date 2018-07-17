@@ -1,6 +1,7 @@
 
 export class Signaller {
-    constructor (active, date, currentColor){
+    constructor (signallerId, active, date, currentColor){
+        this.signallerId = signallerId;
         this.active = active;
         this.date = date;
         this.currentColor = currentColor;
