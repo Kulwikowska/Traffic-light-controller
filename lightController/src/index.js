@@ -1,9 +1,11 @@
 import express from "express";
-import http from "http";
+import http from 'http';
 import bodyParser from 'body-parser';
-import SignallerComunicationHandler  from "./handler/signallerComunicationHandler"
+import signallerCommunicationHandler  from "./handler/signallerCommunicationHandler"
+import tableCommunicationHandler from './handler/tableCommunicationHandler';
 import lightChangeJob from './jobs/lightChangeJob';
 import signallersRoutes from './routes/signallersRoutes';
+import cors from 'cors'
 
 const app = express();
 const serverPort = 8080;
@@ -11,17 +13,12 @@ const server = http.createServer(app);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-  });
-  
+app.use(cors({credentials: false}));
 app.use('/signallers', signallersRoutes());
 
-SignallerComunicationHandler.startWebSocketServer(server);
+signallerCommunicationHandler.startSocketServer(server);
+tableCommunicationHandler.startSocketServer(server);
 
 server.listen(serverPort, () => {
-    console.log(`Websocket server started on port ` + serverPort);
+    console.log(`Socket server started on port ` + serverPort);
 });

@@ -1,7 +1,8 @@
 import schedule from 'node-schedule'
-import signallerComunicationHandler from '../handler/signallerComunicationHandler';
+import signallerCommunicationHandler from '../handler/signallerCommunicationHandler';
 import connectedSignallersRegistry from '../repository/connectedSignallersRegistry';
 import {Signaller} from '../model/signaller';
+import tableCommunicationHandler from '../handler/tableCommunicationHandler';
 var j = schedule.scheduleJob('*/1 * * * * *', function() {
     var signallers = connectedSignallersRegistry.findAllSignallers();
     for(let signaller of signallers) {
@@ -22,9 +23,9 @@ var j = schedule.scheduleJob('*/1 * * * * *', function() {
                 default:
                     console.log("color is not defined");
             }
-            signaller.date = Date.now();
-            signallerComunicationHandler.sendColorToSignaller(signaller.signallerId, signaller.currentColor);
+            signaller.date = Date.now();         
+            signallerCommunicationHandler.sendColorToSignaller(signaller.signallerId, signaller.currentColor);
+            tableCommunicationHandler.sendDataToGui(signaller);
         }
     }
-
     });

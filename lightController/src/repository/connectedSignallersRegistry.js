@@ -1,6 +1,6 @@
-import WebSocket from "ws";
 import {Signaller} from '../model/signaller';
 import utils from '../utils/utils';
+import tableCommunicationHandler from '../handler/tableCommunicationHandler';
 
 const signallers = {}
 
@@ -18,7 +18,7 @@ export default {
             return signallers[id];
         } 
         signallers[id]= new Signaller(id, true, Date.now(), utils.randomProperty(colors));
-        
+        tableCommunicationHandler.sendDataToGui(signallers[id]);
         return signallers[id];
     },
     deactivateSignaller(id){
@@ -26,11 +26,13 @@ export default {
             throw Error('Id is not in use');
         }
         signallers[id].active = false;
+        tableCommunicationHandler.sendDataToGui(signallers[id]);
     },
     findAllSignallers(){
         return Object.values(signallers);
+    }, 
     }
-}
+
 
 
 
