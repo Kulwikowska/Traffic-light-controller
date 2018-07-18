@@ -1,12 +1,13 @@
 <template>
     <div>
+        <header>
         <h1>Traffic Lights Controller</h1>
-
+        </header>
         <table class="table table-hover">
             <thead>
             <tr>
                 <td>Signaller ID</td>
-                <td>Actions</td>
+                <td>Is Active</td>
                 <td>State</td>
             </tr>
             </thead>
@@ -16,6 +17,7 @@
                     <td>{{ signaller.signallerId }}</td>
                     <td>{{ signaller.active }}</td>
                     <td>{{ signaller.currentColor }}</td>
+
                     <td></td>
                 </tr>
             </tbody>
@@ -26,13 +28,13 @@
 <script>
 import io from 'socket.io-client';
 import axios from 'axios';
+import config from '../configuration/config'
 
 export default {
     data() {
         return {
             signallers: [],
-            // socket : io.connect('http://localhost:8080', {path: "/gui"}),
-            socket : io('localhost:8080', {path: "/gui"})
+            socket : io(`${config.lightControllerAdress}`, {path: "/gui"})
         }
     },
     created: function() {
@@ -43,7 +45,7 @@ export default {
     },
     methods: {
         fetchSignallers() {
-            let uri = 'http://localhost:8080/signallers';
+            let uri = `http://${config.lightControllerAdress}/signallers`;
             axios.get(uri).then((response) => {
                 this.signallers = response.data;
             });
@@ -63,6 +65,25 @@ export default {
 </script>
 
 <style>
+
+body {
+    background-color: rgb(229, 234, 236);
+}
+
+header {
+    text-align: center;
+    margin: 20px 0;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+td {
+    text-align: center;
+}
 
 </style>
 

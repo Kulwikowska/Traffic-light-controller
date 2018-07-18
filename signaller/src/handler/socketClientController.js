@@ -7,7 +7,6 @@ io.on('connect', function (socket) {
   console.log('Signaller is connected');
   try {
     io.emit('message', new Message('Signaller activated', config.id));
-    console.log('OK!!!!');
   } catch (error) {
     console.log(error);
   }
